@@ -53,7 +53,7 @@ open class BaseNotificationBanner: UIView {
     public let style: BannerStyle
 
     /// The height of the banner when it is presented
-    public var bannerHeight: CGFloat {
+    public var bannerHeight: CGFloat {  
         get {
             if let customBannerHeight = customBannerHeight {
                 return customBannerHeight
@@ -268,9 +268,8 @@ open class BaseNotificationBanner: UIView {
     }
 
     internal func spacerViewHeight() -> CGFloat {
-        return NotificationBannerUtilities.isNotchFeaturedIPhone()
-            && UIApplication.shared.statusBarOrientation.isPortrait
-            && (parentViewController?.navigationController?.isNavigationBarHidden ?? true) ? 40.0 : 10.0
+        return 10
+ 
     }
 
     private func finishBannerYOffset() -> CGFloat {
@@ -278,9 +277,10 @@ open class BaseNotificationBanner: UIView {
         
         return bannerQueue.banners.prefix(bannerIndex).reduce(0) { $0
             + $1.bannerHeight
-            - (bannerPosition == .top ? spacerViewHeight() : 0) // notch spacer height for top position only
-            + (bannerPosition == .top ? spacerViewDefaultOffset : -spacerViewDefaultOffset) // to reduct additions in createBannerConstraints (it's needed for proper shadow framing)
-            + (bannerPosition == .top ? spacerViewDefaultOffset : -spacerViewDefaultOffset) // default space between banners
+            + spacerViewDefaultOffset
+//            - (bannerPosition == .top ? spacerViewHeight() : 10) // notch spacer height for top position only
+//            + (bannerPosition == .top ? spacerViewDefaultOffset : -spacerViewDefaultOffset) // to reduct additions in createBannerConstraints (it's needed for proper shadow framing)
+//            + (bannerPosition == .top ? spacerViewDefaultOffset : -spacerViewDefaultOffset) // default space between banners
             // this calculations are made only for banners except first one, for first banner it'll be 0
         }
     }
@@ -584,9 +584,7 @@ open class BaseNotificationBanner: UIView {
      */
 
     internal func shouldAdjustForNotchFeaturedIphone() -> Bool {
-        return NotificationBannerUtilities.isNotchFeaturedIPhone()
-            && UIApplication.shared.statusBarOrientation.isPortrait
-            && (self.parentViewController?.navigationController?.isNavigationBarHidden ?? true)
+        return false
     }
     /**
         Updates the scrolling marquee label duration
